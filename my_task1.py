@@ -1,7 +1,7 @@
 import sys
-function = sys.argv[1]
-a = float(sys.argv[2])
-b = float(sys.argv[3])
+function = sys.argv[1] #function
+a = float(sys.argv[2]) #first element of equation
+b = float(sys.argv[3]) #second element of equation
 if function == "multiply":
     print(a * b)
 elif function == "divide":

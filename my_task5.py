@@ -1,6 +1,6 @@
 import array
 def knapsack(weights, capacity):
-    weight_set = set([0])
+    weight_set = set([0]) #Initialising a set
     for weight in weights:
         temp = set()
         for curr_sum in weight_set:
@@ -8,9 +8,10 @@ def knapsack(weights, capacity):
                 return capacity
             elif weight + curr_sum < capacity:
                 temp.add(weight + curr_sum)
-        weight_set.update(temp)
-    return max(weight_set)
+        weight_set.update(temp) #adding sums to set
+    return max(weight_set) #taking maximum sum possible and return it
 if __name__ == '__main__':
+    #Initialising all variables
     print("Enter n")
     n = input()
     i = 0
