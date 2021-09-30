@@ -1,16 +1,20 @@
-import math
+from math import gcd
+
 class Rational:
     def __init__(self, numerator=2, denominator=4):
-        if (denominator == 0):
+        if not denominator:
             raise ZeroDivisionError("Division by Zero")
-        if not (isinstance(numerator,int)) or not (isinstance(denominator, int)):
+        if not isinstance(numerator, int) or not isinstance(denominator, int):
             raise TypeError("Value must be int")
-        self.__denominator = int(denominator / math.gcd(numerator,denominator))
-        self.__numerator = int(numerator / math.gcd(numerator,denominator))
+        tmp = gcd(numerator, denominator)
+        self.__denominator = denominator // tmp
+        self.__numerator = numerator // tmp
+
     def rat(self):
-        return(str(self.__numerator) + '/' + str(self.__denominator))
+        return f'{self.__numerator} / {self.__denominator}'
+
     def fl(self):
-        return(self.__numerator/self.__denominator)
+        return self.__numerator/self.__denominator
 try:
     r = Rational()
     print(r.rat())
