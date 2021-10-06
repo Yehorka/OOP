@@ -1,6 +1,10 @@
 from re import split
+from os.path import exists
 class Texthandler:
-    def __init__(self, file):
+    def __init__(self, name):
+        if not exists(name):
+            raise FileNotFoundError("No such file")
+        file = open(name)
         self.__text = file.read()
         self.__characters = 0
         self.__words = 0
@@ -14,8 +18,7 @@ class Texthandler:
         return len(list(filter(lambda x: x, res)))
     def count_special_character(self, symbol):
         return self.__text.count(symbol)
-file = open('F:/test.txt')
-text = Texthandler(file)
+text = Texthandler("F:/test.txt")
 print(text.handle_words())
 print(text.handle_sentences())
 print(text.count_special_character(','))
