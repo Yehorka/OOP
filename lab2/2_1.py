@@ -26,10 +26,6 @@ class Order:
         self.__product_list = []
         self.__customer = customer
         self.__product_list.append(product)
-    def display(self):
-        for item in self.__product_list:
-            print(f'{item.getprice()}')
-        print(f'{self.__customer.getname()}')
     def add(self, product):
         self.__product_list.append(product)
     def calc_sum(self):
@@ -37,10 +33,10 @@ class Order:
         for prod in self.__product_list:
             sum += prod.getprice()
         return sum
-p = Product(100, "penis", "large")
-c = Customer("Dickens", "Dick", "Dickovich", 390009)
+p = Product(100, "Shovel", "10 inch")
+c = Customer()
 o = Order(p,c)
-o.add(Product(120.1, "cunt", "small"))
+o.add(Product(120.1, "Chainsaw", "small"))
 o.display()
 print(f'{o.calc_sum()}')
 
