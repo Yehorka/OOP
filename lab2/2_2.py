@@ -1,24 +1,32 @@
 from re import split
 from os.path import exists
+
+
 class Texthandler:
     def __init__(self, name):
+        if not isinstance(name, str):
+            raise TypeError("Must be str")
+        if name == "":
+            raise NameError("Name is empty")
         if not exists(name):
-            raise FileNotFoundError("No such file")
-        file = open(name)
-        self.__text = file.read()
-        self.__characters = 0
-        self.__words = 0
-    def handle_words(self):
-        print(self.__text)
-        return len(self.__text.split())
-    def handle_chars(self):
-        return len(self.__text)
-    def handle_sentences(self):
-        res = split(r"[.?!\n]+", self.__text)
-        return len(list(filter(lambda x: x, res)))
-    def count_special_character(self, symbol):
-        return self.__text.count(symbol)
-text = Texthandler("F:/test.txt")
-print(text.handle_words())
-print(text.handle_sentences())
-print(text.count_special_character(','))
+            raise FileNotFoundError("No such text")
+
+        self.__filename = name
+
+    def handle(self):
+        file = open(self.__filename)
+        text = file.read()
+        words = len(text.split())
+        chars = len(text)
+        res = split(r"[.?!\n]+", text)
+        sent = len(list(filter(lambda x: x, res)))
+        file.close()
+        return chars, words, sent
+
+    def __str__(self) -> str:
+        text = self.handle()
+        return f'Stats:\nChars:{text[0]}\nWords:{text[1]}\nSentences:{text[2]}'
+
+
+text = Texthandler("test.txt")
+print(text)
