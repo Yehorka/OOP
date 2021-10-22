@@ -75,7 +75,7 @@ class Customer:
     def mobile_phone(self, mob):
         if not isinstance(mob, int):
             raise TypeError("Must be int value!")
-        if not phonenumbers.is_possible_number(phonenumbers.parse(mobile_phone)):
+        if not phonenumbers.is_possible_number(phonenumbers.parse(mob)):
             raise ValueError("Number isn`t valid")
         self.__mobile_phone = mob
     def __str__(self) -> str:
@@ -96,11 +96,11 @@ class Order:
         return self.__products
     @products.setter
     def products (self, products):
-        if not isinstance(all(products), Product):
+        if not all(isinstance(item, Product) for item in Product):
             raise TypeError("Must be Product type")
         self.__products = products
     def add(self, *products):
-        if not all(isinstance(i, Product) for i in products):
+        if not all(isinstance(item, Product) for item in products):
             raise TypeError("Must be Product type")
         self.__products += products
     @property

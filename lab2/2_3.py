@@ -58,15 +58,15 @@ class Student:
 
     @grades.setter
     def grades(self, grades):
-        if not all(isinstance(i, int) for i in grades):
+        if not all(isinstance(item, int) for item in grades ):
             raise TypeError('Grade must be Int')
         if not grades:
             raise ValueError('Shouldn`t be empty')
         self.__grades = grades
-        self.__average_score = round(sum(grades) / len(grades), 1)
 
     @property
     def average_score(self):
+        self.__average_score = round(sum(self.grades) / len(self.grades), 1)
         return self.__average_score
     def __str__(self) -> str:
         return f'name: {self.name}\nsurname: {self.surname}\nRecord book number: {str(self.record_book)}\nGrades: {self.grades}\nAverage: {self.average_score}'
@@ -84,13 +84,14 @@ class Group:
             raise ValueError('Group can`t be empty')
         if len(student_list) > 20:
             raise ValueError('Group must contain less than 20 students')
-        if isinstance(all(student_list), Student):
+        if  not all(isinstance(item, Student) for item in student_list):
             raise TypeError('Students must be Student type')
         if self.__hasDuplicates(student_list):
             raise ValueError('Group can`t have students with same surname and name')
         self.__students = list(student_list)
     def best(self):
         self.students.sort(key=lambda x: x.average_score, reverse=True)
+        #return self.students[:5]
 
     def __hasDuplicates(self, student_list):
         counter = 0
@@ -103,7 +104,7 @@ class Group:
         return False
     def __str__(self):
         st = ""
-        for i in self.students[:5]:
+        for i in self.students:
             st += str(i) + "\n"
         return f'{st}'
 
@@ -114,6 +115,6 @@ example4 = Student('Suhulovc', 'Yehor', 3, 6,5,3,3,2,4)
 example5 = Student('Suhulovd', 'Yehor', 3, 7,5,3,3,2,4)
 example6 = Student('Suhulove', 'Yehor', 3, 8,5,3,3,2,4)
 group = Group(example1, example2, example3, example4, example5, example6)
-group.best()
+print(group.best())
 print(group)
 #print(example1)

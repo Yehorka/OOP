@@ -1,4 +1,4 @@
-from re import split
+from re import split, sub, VERBOSE
 from os.path import exists
 
 
@@ -15,13 +15,21 @@ class Texthandler:
 
     def handle(self):
         file = open(self.__filename)
-        text = file.read()
-        words = len(text.split())
-        chars = len(text)
-        res = split(r"[.?!\n]+", text)
-        sent = len(list(filter(lambda x: x, res)))
+        chars = 0
+        words = 0
+        sent = 0
+        for line in file:
+            line = line.strip("\n")
+            chars += len(line)
+            res = split(r"[.?!\n]+", line)
+            line.replace(r"[,?.;]+", ' ')
+            clean = sub(r"""[,.;@#?!&$]+\ *,"""," ",line, flags = VERBOSE)
+            word = clean.split()
+            words += len(word)
+            sent = len(list(filter(lambda x: x, res)))
         file.close()
         return chars, words, sent
+
 
     def __str__(self) -> str:
         text = self.handle()
