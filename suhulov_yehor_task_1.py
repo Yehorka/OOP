@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 from re import compile
 class Queue:
     def __init__(self, *workers):
@@ -158,7 +158,7 @@ print(b)
 e = Queue(a, b)
 print
 print(e.stats_most_expected_salary())
-=======
+
 from re import compile
 class Queue:
     def __init__(self, *workers):
@@ -318,5 +318,5 @@ print(b)
 e = Queue(a, b)
 print
 print(e.stats_most_expected_salary())
->>>>>>> 64f7082fb29bfe06cbef82563d55b1c573b10a6f
+
 print(e.stats_average_expected_salary())

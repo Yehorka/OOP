@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from os import path
 from timeit import timeit
 from random import randint
@@ -32,7 +31,7 @@ file3 = open("sample.txt", "r")
 res = sum(int(line.strip().isdigit()) for line in file3)
 file3.close()
 """
-=======
+
 from os import path
 from timeit import timeit
 from random import randint
@@ -66,5 +65,5 @@ file3 = open("sample.txt", "r")
 res = sum(int(line.strip().isdigit()) for line in file3)
 file3.close()
 """
->>>>>>> 64f7082fb29bfe06cbef82563d55b1c573b10a6f
+
 print(timeit(s, number=10))

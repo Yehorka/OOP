@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 class Time:
     def __init__(self, hours, minutes, seconds):
         self.hours = hours
@@ -58,7 +58,7 @@ class Time:
 p = Time(23, 59, 10)
 print(p)
 p.increase()
-=======
+
 class Time:
     def __init__(self, hours, minutes, seconds):
         self.hours = hours
@@ -118,5 +118,5 @@ class Time:
 p = Time(23, 59, 10)
 print(p)
 p.increase()
->>>>>>> 64f7082fb29bfe06cbef82563d55b1c573b10a6f
+
 print(p)
