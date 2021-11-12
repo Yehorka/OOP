@@ -1,6 +1,17 @@
+
 import json
 import datetime
+
+ADVANCED_DELTA = 60
+LATE_DELTA = 10
+ADVANCED_COEF = 0.6
+LATE_COEF = 1.1
+STUDENT_COEF = 0.5
+
 class Ticket:
+    """
+    Regular ticket
+    """
     id_generator = 0
     def __init__(self):
         with open("IT-event.json", 'r') as f:
@@ -35,20 +46,24 @@ class Advance_Ticket(Ticket):
         super().__init__()
         with open("IT-event.json", 'r') as f:
             event = json.load(f)
-            self.price = event['event']['price'] * 0.6
+            self.price = event['event']['price'] * ADVANCED_COEF
 class Late_Ticket(Ticket):
     def __init__(self):
         super().__init__()
         with open("IT-event.json", 'r') as f:
             event = json.load(f)
-            self.price = event['event']['price'] * 1.1
+            self.price = event['event']['price'] * LATE_COEF
 class Student_Ticket(Ticket):
     def __init__(self):
         super().__init__()
         with open("IT-event.json", 'r') as f:
             event = json.load(f)
-            self.price = event['event']['price'] * 0.5
+            self.price = event['event']['price'] * STUDENT_COEF
 class Event:
+    """
+    showing tickets to an event, specified in IT-event.json file
+    and selling tickets, putting their data in data.json file
+    """
     def __init__(self):
         with open("IT-event.json", 'r') as f:
             event = json.load(f)
@@ -66,11 +81,11 @@ class Event:
             event = json.load(f)
         if not event['event']['number_of_tickets']:
             return f"Ooops, you`re too late"
-        if date_dif > 60:
+        if date_dif > ADVANCED_DELTA:
             return f"Ticket price: {self.advanced.price}$\nFor students: " \
                    f"{self.student.price}$\n{event['event']['number_of_tickets']}" \
                    f" tickets left\n"
-        elif 0 <= date_dif < 10:
+        elif 0 <= date_dif < LATE_DELTA:
             return f"Ticket price: {self.late.price}$\nFor students: " \
                    f"{self.student.price}$\n{event['event']['number_of_tickets']}" \
                    f" tickets left\n"
@@ -92,9 +107,9 @@ class Event:
             json.dump(event, f)
         if is_student:
             ticket = self.student
-        elif date_dif > 60:
+        elif date_dif > ADVANCED_DELTA:
             ticket = self.advanced
-        elif 0 <= date_dif < 10:
+        elif 0 <= date_dif < LATE_DELTA:
             ticket = self.late
         else:
             ticket = self.regular
@@ -126,7 +141,6 @@ class Event:
         return f"YOUR TICKET:\nTicket id: {ticket_id}\n" \
                f"Price: {price}\nPurchase date: {date}"
 responce = ""
-#id = ""
 event = Event()
 print(event.show_tickets())
 print(event.date)
@@ -151,6 +165,8 @@ while not responce.upper() == "Q":
                 print(event.buy_ticket(st))
             except TypeError:
                 print("Something went wrong, try again")
+        elif responce.upper() == "Q":
+            break
         else:
             print("Ooops, try again")
         print(event.show_tickets())
