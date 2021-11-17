@@ -1,0 +1,21 @@
+{"monday":{
+    "ingredients":["Souse", "Cheese", "Pineapple"],
+    "name": "Hawaiian"},
+  "tuesday":{
+    "ingredients":["Souse", "Cheese", "Sausage"],
+    "name": "Sausagie"},
+  "wednesday":{
+    "ingredients":["Souse", "Tomato", "Beef"],
+    "name": "It`s wednesday my dudes"},
+  "thursday":{
+    "ingredients":["Souse", "Cheese"],
+    "name": "Light"},
+  "friday":{
+    "ingredients":["Souse", "Cheese", "Mushrooms", "Corn"],
+    "name": "Mushroomie"},
+  "saturday":{
+    "ingredients":["Souse", "Cheese", "Tomato"],
+    "name":"Light+"},
+  "sunday":{
+    "ingredients":["Souse", "Cheese", "Chicken", "Beef", "Corn", "Olives"],
+    "name":"Big Boy"}}
