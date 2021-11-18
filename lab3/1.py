@@ -7,14 +7,15 @@ LATE_DELTA = 10
 ADVANCED_COEF = 0.6
 LATE_COEF = 1.1
 STUDENT_COEF = 0.5
-
+EVENT_JSON = "IT-event.json"
+DATA_JSON = "data.json"
 class Ticket:
     """
     Regular ticket
     """
     id_generator = 0
     def __init__(self):
-        with open("IT-event.json", 'r') as f:
+        with open(EVENT_JSON, 'r') as f:
             event = json.load(f)
         self.price = event['event']['price']
         Ticket.id_generator = event['event']['number_of_tickets']
@@ -44,19 +45,19 @@ class Ticket:
 class Advance_Ticket(Ticket):
     def __init__(self):
         super().__init__()
-        with open("IT-event.json", 'r') as f:
+        with open(EVENT_JSON, 'r') as f:
             event = json.load(f)
             self.price = event['event']['price'] * ADVANCED_COEF
 class Late_Ticket(Ticket):
     def __init__(self):
         super().__init__()
-        with open("IT-event.json", 'r') as f:
+        with open(EVENT_JSON, 'r') as f:
             event = json.load(f)
             self.price = event['event']['price'] * LATE_COEF
 class Student_Ticket(Ticket):
     def __init__(self):
         super().__init__()
-        with open("IT-event.json", 'r') as f:
+        with open(EVENT_JSON, 'r') as f:
             event = json.load(f)
             self.price = event['event']['price'] * STUDENT_COEF
 class Event:
@@ -65,7 +66,7 @@ class Event:
     and selling tickets, putting their data in data.json file
     """
     def __init__(self):
-        with open("IT-event.json", 'r') as f:
+        with open(EVENT_JSON, 'r') as f:
             event = json.load(f)
         self.date = datetime.datetime(*list(event["event"]["date"]))
         self.regular = Ticket()
@@ -77,7 +78,7 @@ class Event:
         date_dif = (self.date - datetime.datetime.now()).days
         if date_dif < 0:
             return f"Ooops, you`re too late"
-        with open("IT-event.json", 'r') as f:
+        with open(EVENT_JSON, 'r') as f:
             event = json.load(f)
         if not event['event']['number_of_tickets']:
             return f"Ooops, you`re too late"
@@ -95,7 +96,7 @@ class Event:
                    f" tickets left\n"
     def buy_ticket(self, is_student):
         date = datetime.datetime.now()
-        with open("IT-event.json", 'r') as f:
+        with open(EVENT_JSON, 'r') as f:
             event = json.load(f)
         if event["event"]["number_of_tickets"] <= 0:
             raise ValueError("Tickets sold out!")
@@ -103,7 +104,7 @@ class Event:
         if date_dif < 0:
             raise TimeoutError("Time to buy tickets is up. Event ended.")
         event["event"]["number_of_tickets"] -= 1
-        with open("IT-event.json", 'w') as f:
+        with open(EVENT_JSON, 'w') as f:
             json.dump(event, f)
         if is_student:
             ticket = self.student
@@ -115,7 +116,7 @@ class Event:
             ticket = self.regular
         ticket.id = Ticket.id_generator
         Ticket.id_generator -= 1
-        with open("data.json", 'r') as f:
+        with open(DATA_JSON, 'r') as f:
             data = json.load(f)
         if 'event' not in data:
             data['event'] = {}
@@ -123,14 +124,14 @@ class Event:
             data['event'][str(ticket.id)] = {}
             data['event'][str(ticket.id)]['price'] = ticket.price
             data['event'][str(ticket.id)]['purchase_date'] = str(date)
-        with open("data.json", 'w') as f:
+        with open(DATA_JSON, 'w') as f:
             json.dump(data, f, indent = 4)
         return f"You succesfully bought your ticket for {ticket.price}!\n"\
                f"Id:{ticket.id}\n"
 
     @staticmethod
     def search_ticket(ticket_id):
-        with open("data.json", 'r') as f:
+        with open(DATA_JSON, 'r') as f:
             data = json.load(f)
         if "event" not in data:
             raise KeyError("There is no events in data")
