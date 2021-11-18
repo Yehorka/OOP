@@ -1,28 +1,28 @@
 {"0":{
-    "ingredients":["Sause", "Cheese", "Pineapple"],
+    "ingredients":["Sauce", "Cheese", "Pineapple"],
     "name": "Hawaiian",
     "day": "monday"},
   "1":{
-    "ingredients":["Sause", "Cheese", "Sausage"],
+    "ingredients":["Sauce", "Cheese", "Sausage"],
     "name": "Sausagie",
     "day": "tuesday"},
   "2":{
-    "ingredients":["Sause", "Tomato", "Beef"],
+    "ingredients":["Sauce", "Tomato", "Beef"],
     "name": "It`s wednesday my dudes",
     "day": "wednesday"},
   "3":{
-    "ingredients":["Sause", "Cheese"],
+    "ingredients":["Sauce", "Cheese"],
     "name": "Light",
     "day": "thursday"},
   "4":{
-    "ingredients":["Sause", "Cheese", "Mushrooms", "Corn"],
+    "ingredients":["Sauce", "Cheese", "Mushrooms", "Corn"],
     "name": "Mushroomie",
     "day": "friday"},
   "5":{
-    "ingredients":["Sause", "Cheese", "Tomato"],
+    "ingredients":["Sauce", "Cheese", "Tomato"],
     "name":"Light+",
     "day": "saturday"},
   "6":{
-    "ingredients":["Sause", "Cheese", "Chicken", "Beef", "Corn", "Olives"],
+    "ingredients":["Sauce", "Cheese", "Chicken", "Beef", "Corn", "Olives"],
     "name":"Big Boy",
     "day": "sunday"}}
