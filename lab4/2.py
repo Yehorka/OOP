@@ -1,5 +1,5 @@
 import re
-
+import json
 
 class Birthday:
     def __init__(self, day, month, year):
@@ -9,7 +9,7 @@ class Birthday:
 
     @property
     def day(self):
-        return self.day
+        return self.__day
 
     @day.setter
     def day(self, day):
@@ -43,7 +43,10 @@ class Birthday:
             raise ValueError("The year has to be between 1 and 2021 (inclusive)!\n(Unfortunately I don't care about "
                              "very old years.....)")
         self.__year = year
-
+    def __repr__(self):
+        return f"Birthday:\n\t\tThe day: {self.day}\n" \
+               f"\t\tThe month: {self.month}\n" \
+               f"\t\tThe year: {self.year}"
     def __str(self):
         return f"Birthday:\n\t\tThe day: {self.day}\n" \
                f"\t\tThe month: {self.month}\n" \
@@ -59,7 +62,7 @@ class Note:
 
     @property
     def name(self):
-        return self.name
+        return self.__name
 
     @name.setter
     def name(self, name):
@@ -128,6 +131,10 @@ class Notebook:
         return "\t\t (EMPTY)\n"
     
 notebook = Notebook()
+notebook + Note("Yehor", "Suhulov", "+380963268933", Birthday(18,11,2002))
+notebook + Note("Myhailo", "Lahoida", "+380678876588", Birthday(30,8,2003))
+notebook + Note("Danylo", "Grinchishin", "+380452063821", Birthday(11,4,2002))
+
 print("There is notebook. What would you like to do?")
 while True:
     print("1. Add new element (record)")
@@ -150,7 +157,6 @@ while True:
                             Birthday(int(input("\nBirthday:\n\tthe day\n\t")), int(input("\n\tthe month\n\t")),
                                      int(input("\n\tthe year\n\t"))))
     if answer1 == '2':
-        print("Print:\n")
         notebook - input("Name for delete the record\n(Be attentive!You'll delete ALL records with this name!!)\n")
     if answer1 == '3':
         print("Print:\n\t")
