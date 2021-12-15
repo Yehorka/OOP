@@ -1,0 +1,15 @@
+[
+    {
+        "name": "Andrii",
+        "courses": [
+            "Python",
+            "Test"
+        ]
+    },
+    {
+        "name": "Danylo",
+        "courses": [
+            "C++"
+        ]
+    }
+]

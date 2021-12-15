@@ -1,0 +1,30 @@
+[
+    {
+        "name": "Python",
+        "type": "local",
+        "program": [
+            "oop",
+            "pep8"
+        ],
+        "teacher": "Andrii"
+    },
+    {
+        "name": "C++",
+        "type": "offset",
+        "program": [
+            "oop",
+            "C"
+        ],
+        "teacher": "Danylo"
+    },
+    {
+        "name": "Test",
+        "type": "offset",
+        "program": [
+            "damn",
+            "yeah",
+            "it works!"
+        ],
+        "teacher": "Andrii"
+    }
+]
