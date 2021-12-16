@@ -11,8 +11,12 @@ class ICourse(ABC):
         pass
 
     @abstractmethod
-    def tojson(self, type:str):
+    def tojson(self, type: str):
         pass
+
+    @abstractmethod
+    def outofjson(self):
+    pass
 
     @property
     @abstractmethod
@@ -30,6 +34,14 @@ class ICourse(ABC):
         pass
 
 class ITeacher(ABC):
+
+    @abstractmethod
+    def tojson(self):
+        pass
+
+    @abstractmethod
+    def addcourse(self, name: str):
+        pass
 
     @property
     @abstractmethod
@@ -107,7 +119,7 @@ class Course(ICourse):
         self.__teacher = value
 
 
-    def tojson(self, type):
+    def tojson(self, type: str):
         exists = False
         a = dict()
         with open(COURSE_JSON, "r") as f:
@@ -174,7 +186,7 @@ class Teacher(ITeacher):
             raise TypeError
         self.__courses = value
 
-    def addcourse(self, name):
+    def addcourse(self, name : str):
         if name in self.courses:
             pass
         else:
@@ -233,7 +245,7 @@ class OffsiteCourse(Course, IOffsiteCourse):
 
 class CourseFactory(ICourseFactory):
 
-    def course_factory(self, name, course_program, course_type, teacher):
+    def course_factory(self, name: str, course_program: list, course_type: str, teacher: ITeacher):
         if course_type == 'local':
             a = LocalCourse(name, course_program, teacher)
         elif course_type == 'offset':
@@ -256,7 +268,8 @@ class CourseFactory(ICourseFactory):
                 return Teacher(name)
 
     def delete_course(self, course):
-        del course
+        course.outofjson()
+
 f = CourseFactory()
 t = f.teacher_factory("Andrii")
 d = f.teacher_factory("Danylo")
