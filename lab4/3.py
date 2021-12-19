@@ -3,6 +3,8 @@ import json
 
 COURSE_JSON = "Course.json"
 TEACHER_JSON = "Teacher.json"
+COURSE_SCHEMA = "Course_schema.json"
+TEACHER_JSON = "Teacher_schema.json"
 
 class ICourse(ABC):
 

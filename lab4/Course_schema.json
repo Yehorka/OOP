@@ -1,0 +1,35 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Courses",
+    "description": "List of courses json",
+    "type": "array",
+    "properties": {
+        "": {
+            "description": "Course",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name of the course",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "Type of course",
+                    "type": "string"
+                },
+                "program": {
+                    "description": "Sequence of topics",
+                    "type": "array"
+                },
+                "teacher": {
+                    "description": "Name of teacher, assigned to lead the course",
+                    "type": "string"
+                }
+            }
+        },
+        "required": [
+            "name",
+            "type",
+            "teacher"
+        ]
+    }
+}
