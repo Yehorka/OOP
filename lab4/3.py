@@ -1,10 +1,13 @@
 from abc import abstractmethod, ABC
+
+import jsonschema
+from jsonschema import validate
 import json
 
 COURSE_JSON = "Course.json"
 TEACHER_JSON = "Teacher.json"
 COURSE_SCHEMA = "Course_schema.json"
-TEACHER_JSON = "Teacher_schema.json"
+TEACHER_SCHEMA = "Teacher_schema.json"
 
 class ICourse(ABC):
 
@@ -18,7 +21,7 @@ class ICourse(ABC):
 
     @abstractmethod
     def outofjson(self):
-    pass
+        pass
 
     @property
     @abstractmethod
@@ -135,7 +138,13 @@ class Course(ICourse):
             t["program"] = self.course_program
             t["teacher"] = self.teacher.name
             with open(COURSE_JSON, "w") as f:
-                json.dump(data, f, indent=4)
+                with open(COURSE_SCHEMA, "r") as schem:
+                    try:
+                        schema = json.load(schem)
+                        validate(data, schema)
+                        json.dump(data, f, indent=4)
+                    except jsonschema.exceptions.ValidationError as err:
+                        print(err)
         else:
             a["name"] = self.name
             a["type"] = type
@@ -143,7 +152,15 @@ class Course(ICourse):
             a["teacher"] = self.teacher.name
             data.append(a)
             with open(COURSE_JSON, "w") as f:
-                json.dump(data,f,indent=4)
+                with open(COURSE_SCHEMA, "r") as schem:
+                    try:
+                        schema = json.load(schem)
+                        validate(data, schema)
+                        json.dump(data, f, indent=4)
+                    except jsonschema.exceptions.ValidationError as err:
+                        print(err)
+
+
 
     def outofjson(self):
         with open(COURSE_JSON, "r") as f:
@@ -206,13 +223,25 @@ class Teacher(ITeacher):
         if exists:
             teacher["courses"] = self.courses
             with open(TEACHER_JSON, "w") as t:
-                json.dump(data, t, indent=4)
+                with open(TEACHER_SCHEMA, "r") as schem:
+                    try:
+                        schema = json.load(schem)
+                        validate(data, schema)
+                        json.dump(data, t, indent=4)
+                    except jsonschema.exceptions.ValidationError as err:
+                        print(err)
         else:
             a["name"] = self.name
             a["courses"] = self.courses
             data.append(a)
             with open(TEACHER_JSON, "w") as t:
-                json.dump(data, t, indent=4)
+                with open(TEACHER_SCHEMA, "r") as schem:
+                    try:
+                        schema = json.load(schem)
+                        validate(data, schema)
+                        json.dump(data, t, indent=4)
+                    except jsonschema.exceptions.ValidationError as err:
+                        print(err)
 
     def __str__(self):
         return f'Teacher:' \
@@ -261,13 +290,13 @@ class CourseFactory(ICourseFactory):
     def teacher_factory(self, name):
         with open(TEACHER_JSON, "r") as file_teacher:
             teachers = json.load(file_teacher)
-        for t in teachers:
-            if name == t["name"]:
-                teacher = Teacher(t["name"])
-                teacher.courses.extend(t["courses"])
-                return teacher
-            else:
-                return Teacher(name)
+            for t in teachers:
+                if name == t["name"]:
+                    teacher = Teacher(t["name"])
+                    teacher.courses.extend(t["courses"])
+                    return teacher
+                else:
+                    return Teacher(name)
 
     def delete_course(self, course):
         course.outofjson()
