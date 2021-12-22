@@ -1,10 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Teachers",
-    "description": "List of teachers json",
-    "type": "array",
-    "properties": {
-        "": {
             "description": "Teacher",
             "type": "object",
             "properties": {
@@ -18,5 +14,3 @@
                 }
             }
         }
-    }
-}

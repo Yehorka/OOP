@@ -9,18 +9,15 @@ TEACHER_JSON = "Teacher.json"
 COURSE_SCHEMA = "Course_schema.json"
 TEACHER_SCHEMA = "Teacher_schema.json"
 
+
 class ICourse(ABC):
 
     @abstractmethod
-    def outofjson(self):
+    def serialize(self, course_type):
         pass
 
     @abstractmethod
-    def tojson(self, type: str):
-        pass
-
-    @abstractmethod
-    def outofjson(self):
+    def out_of_json(self):
         pass
 
     @property
@@ -38,14 +35,15 @@ class ICourse(ABC):
     def course_program(self):
         pass
 
+
 class ITeacher(ABC):
 
     @abstractmethod
-    def tojson(self):
+    def serialize(self):
         pass
 
     @abstractmethod
-    def addcourse(self, name: str):
+    def add_course(self, name: str):
         pass
 
     @property
@@ -58,15 +56,18 @@ class ITeacher(ABC):
     def courses(self):
         pass
 
+
 class ILocalCourse(ABC):
 
     @abstractmethod
     def __str__(self): pass
 
+
 class IOffsiteCourse(ABC):
 
     @abstractmethod
     def __str__(self): pass
+
 
 class ICourseFactory(ABC):
 
@@ -81,6 +82,7 @@ class ICourseFactory(ABC):
     @abstractmethod
     def delete_course(self, course: ICourse):
         pass
+
 
 class Course(ICourse):
 
@@ -123,8 +125,7 @@ class Course(ICourse):
             raise TypeError
         self.__teacher = value
 
-
-    def tojson(self, type: str):
+    def serialize(self, course_type):
         exists = False
         a = dict()
         with open(COURSE_JSON, "r") as f:
@@ -134,35 +135,30 @@ class Course(ICourse):
                 exists = True
                 break
         if exists:
-            t["type"] = type
+            t["type"] = course_type
             t["program"] = self.course_program
             t["teacher"] = self.teacher.name
-            with open(COURSE_JSON, "w") as f:
-                with open(COURSE_SCHEMA, "r") as schem:
-                    try:
-                        schema = json.load(schem)
-                        validate(data, schema)
-                        json.dump(data, f, indent=4)
-                    except jsonschema.exceptions.ValidationError as err:
-                        print(err)
         else:
             a["name"] = self.name
-            a["type"] = type
+            a["type"] = course_type
             a["program"] = self.course_program
             a["teacher"] = self.teacher.name
             data.append(a)
-            with open(COURSE_JSON, "w") as f:
-                with open(COURSE_SCHEMA, "r") as schem:
-                    try:
-                        schema = json.load(schem)
-                        validate(data, schema)
-                        json.dump(data, f, indent=4)
-                    except jsonschema.exceptions.ValidationError as err:
-                        print(err)
+        self.put_to_json(data)
 
+    @staticmethod
+    def put_to_json(data):
+        with open(COURSE_JSON, "w") as t:
+            with open(COURSE_SCHEMA, "r") as schem:
+                try:
+                    schema = json.load(schem)
+                    for part in data:
+                        validate(part, schema)
+                    json.dump(data, t, indent=4)
+                except jsonschema.exceptions.ValidationError as err:
+                    print(err)
 
-
-    def outofjson(self):
+    def out_of_json(self):
         with open(COURSE_JSON, "r") as f:
             data = json.load(f)
             for t in data:
@@ -205,14 +201,13 @@ class Teacher(ITeacher):
             raise TypeError
         self.__courses = value
 
-    def addcourse(self, name : str):
+    def add_course(self, name : str):
         if name in self.courses:
             pass
         else:
             self.courses.append(name)
 
-    def tojson(self):
-
+    def serialize(self):
         exists = False
         with open(TEACHER_JSON, "r") as f:
             data = json.load(f)
@@ -222,26 +217,24 @@ class Teacher(ITeacher):
                 break
         if exists:
             teacher["courses"] = self.courses
-            with open(TEACHER_JSON, "w") as t:
-                with open(TEACHER_SCHEMA, "r") as schem:
-                    try:
-                        schema = json.load(schem)
-                        validate(data, schema)
-                        json.dump(data, t, indent=4)
-                    except jsonschema.exceptions.ValidationError as err:
-                        print(err)
         else:
             a["name"] = self.name
             a["courses"] = self.courses
             data.append(a)
-            with open(TEACHER_JSON, "w") as t:
-                with open(TEACHER_SCHEMA, "r") as schem:
-                    try:
-                        schema = json.load(schem)
-                        validate(data, schema)
-                        json.dump(data, t, indent=4)
-                    except jsonschema.exceptions.ValidationError as err:
-                        print(err)
+        self.put_to_json(data)
+
+
+    @staticmethod
+    def put_to_json(data):
+        with open(TEACHER_JSON, "w") as t:
+            with open(TEACHER_SCHEMA, "r") as schem:
+                try:
+                    schema = json.load(schem)
+                    for part in data:
+                        validate(part, schema)
+                    json.dump(data, t, indent=4)
+                except jsonschema.exceptions.ValidationError as err:
+                    print(err)
 
     def __str__(self):
         return f'Teacher:' \
@@ -252,10 +245,10 @@ class LocalCourse(Course, ILocalCourse):
 
     def __init__(self, name, program, teacher):
         super().__init__(name, program, teacher)
-        super().tojson("local")
+        super().serialize("local")
 
     def delete(self):
-        super().outofjson()
+        super().out_of_json()
 
     def __str__(self) -> str:
         return super().__str__() + \
@@ -265,10 +258,10 @@ class OffsiteCourse(Course, IOffsiteCourse):
 
     def __init__(self, name, program, teacher):
         super().__init__(name, program, teacher)
-        super().tojson("offset")
+        super().serialize("offset")
 
     def delete(self):
-        super().outofjson()
+        super().out_of_json()
 
     def __str__(self) -> str:
         return super().__str__() + \
@@ -283,8 +276,8 @@ class CourseFactory(ICourseFactory):
             a = OffsiteCourse(name, course_program, teacher)
         else:
             raise ValueError("Wrong")
-        teacher.addcourse(name)
-        teacher.tojson()
+        teacher.add_course(name)
+        teacher.serialize()
         return a
 
     def teacher_factory(self, name):
@@ -299,7 +292,9 @@ class CourseFactory(ICourseFactory):
                     return Teacher(name)
 
     def delete_course(self, course):
-        course.outofjson()
+        course.out_of_json()
+
+
 
 f = CourseFactory()
 t = f.teacher_factory("Andrii")

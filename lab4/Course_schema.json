@@ -1,10 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
     "title": "Courses",
-    "description": "List of courses json",
-    "type": "array",
-    "properties": {
-        "": {
             "description": "Course",
             "type": "object",
             "properties": {
@@ -26,5 +22,3 @@
                 }
             }
         }
-    }
-}
